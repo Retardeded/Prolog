@@ -1,0 +1,89 @@
+jest_matką(X,Y) :- jest_rodzicem(X,Y), 
+                   jest_kobietą(X).
+jest_ojcem(X,Y) :- jest_rodzicem(X,Y), 
+                   jest_mężczyzną(X).
+
+jest_rodzeństwem(X,Y) :- jest_rodzicem(Z,X),
+                         jest_rodzicem(Z,Y), X \= Y,
+						 jest_rodzicem(A,X),
+						 jest_rodzicem(A,Y), Z \= A.
+
+jest_siostrą(X,Y) :- jest_rodzeństwem(X,Y),
+    				 jest_kobietą(X).
+
+jest_bratem(X,Y) :- jest_rodzeństwem(X,Y),
+    				 jest_mężczyzną(X).
+
+jest_żoną(X,Y) :- jest_mężem(Y,X).
+
+jest_stryjenką(X,Y) :- jest_siostrą(X,Z), 
+    				   jest_ojcem(Z,Y);
+					   jest_żoną(X,Z), 
+    					jest_stryjem(Z,Y).
+
+jest_teściem(X,Y) :- jest_ojcem(X,Z), 
+    				   jest_żoną(Y,Z);
+					   jest_ojcem(X,Z), 
+    					jest_mężem(Y,Z).
+
+jest_stryjem(X,Y) :- jest_bratem(X,Z), 
+    				   jest_ojcem(Z,Y).
+
+jest_prababcią(X,Y) :-jest_matką(X,A),
+    				  jest_matką(A,B),
+    				  jest_matką(B,Y).
+
+jest_przodkiem(X,Y) :- jest_rodzicem(X,Y).
+
+jest_przodkiem(X,Y) :- jest_rodzicem(Z,Y),
+                       jest_przodkiem(X,Z).
+    					
+
+jest_krewnym(X,Y) :-jest_przodkiem(Z,X),
+    				jest_przodkiem(Z,Y),
+    				X \= Y.
+
+
+jest_potomkiem(X,Y) :-jest_rodzicem(Y,X).
+
+jest_potomkiem(X,Y) :-jest_rodzicem(Z,X),
+					  jest_potomkiem(Z,Y).
+
+
+jest_szwagrem(X,Y) :-jest_szwagrem2(X,Y).
+jest_szwagrem(X,Y) :-jest_szwagrem2(Y,X).
+
+jest_szwagrem2(X,Y) :-jest_siostrą(Z,X),
+    				 jest_mężem(Y,Z).
+					
+
+
+% jest_rodzicem(imię rodzica, imię dziecka)
+jest_rodzicem(kasia,robert).
+jest_rodzicem(kasia,michał).
+jest_rodzicem(kasia,eliza).
+jest_rodzicem(tomek,michał).
+jest_rodzicem(tomek,robert).
+jest_rodzicem(tomek,eliza).
+jest_rodzicem(robert,miriam).
+jest_rodzicem(eliza,ewa).
+jest_rodzicem(ewa,ewelina).
+
+% jest_mężem(imię męża, imię żony)
+jest_mężem(tomek, kasia).
+jest_mężem(michał, faustyna).
+jest_mężem(stefan,eliza).
+
+% jest_kobietą(imię kobiety)
+jest_kobietą(kasia).
+jest_kobietą(eliza).
+jest_kobietą(faustyna).
+jest_kobietą(ewa).
+jest_kobietą(ewelina).
+
+
+% jest_mężczyzną(imię mężczyzny)
+jest_mężczyzną(tomek).
+jest_mężczyzną(robert).
+jest_mężczyzną(michał).
+jest_mężczyzną(stefan).
