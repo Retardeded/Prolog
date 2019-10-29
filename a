@@ -1,0 +1,19 @@
+findall(Imie, (jest_krewnym(_,Imie)), Znajomi), sort(Znajomi, CzysciZnajomi).
+
+findall(K1-K2, jest_krewnym(K1,K2), Znajomi), sort(Znajomi, CzysciZnajomi).
+
+jest_krewnym_list(X,Y) :-
+    jest_krewnym2(X,Y,L).
+
+jest_krewnym2(X,Y,L) :- 
+	jest_przodkiem(Z,X),
+    jest_przodkiem(Z,Y),
+    X \= Y,
+    \+member((X,Y), L).
+	L = [(X,Y)|L].
+
+findall(X, ksiazka(_,_, autor(X,Y), wydanie(A,B)), Autorzy), sort(Autorzy, Unique).
+findall(X, (ksiazka(_,_, autor(C,_-Sm), wydanie(X,A)),A > Sm), Ksiazki).
+
+
+fail. -> false.
