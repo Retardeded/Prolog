@@ -14,6 +14,19 @@ jest_krewnym2(X,Y,L) :-
 
 findall(X, ksiazka(_,_, autor(X,Y), wydanie(A,B)), Autorzy), sort(Autorzy, Unique).
 findall(X, (ksiazka(_,_, autor(C,_-Sm), wydanie(X,A)),A > Sm), Ksiazki).
+findall(Autor-Ksiazki, bagof(Tytul, (A, B, C)^(ksiazka(A, Tytul, autor(Autor, B), C)), Ksiazki), Lista).
+setof(Autor1-Autor2, (A, B, C, D, E, F, G, H, I, J)^(ksiazka(A, B, autor(Autor1, C-D), E), ksiazka(F, G, autor(Autor2, H-I), J), Autor1 \= Autor2, date_overlaps(C-D, H-I), C=<H), Lista).
+findall(Autor-Wiek, (ksiazka(_, _, autor(Autor, Zycie), _), wiek(Zycie, Wiek)), Lista),
+foldl(max, Lista, none-0, Wynik).
+% sprawdza czy daty na siebie nachodza
+date_overlaps(A-B, C-D) :- A < D, B > C.
+
+% oblicza wiek autora (narodziny-smierc)
+wiek(A-B, Wiek) :- Wiek is B - A.
+
+% sprawdza który autor żył dłużej
+max(A1-W1, -W2, A1-W1) :- W1 >= W2.
+max(-W1, A2-W2, A2-W2) :- W2 > W1.
 
 
 fail. -> false.
