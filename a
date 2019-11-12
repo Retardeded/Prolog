@@ -66,3 +66,18 @@ dodaj(X, [H|T1], [H|T2]) :-
     dodaj(X,T1,T2).
 % 3. element nie spełnia warunku, ignorujemy go
 dodaj(X,T,[X|T]).
+
+
+odwróć([], Acc, Acc).
+% Każdy element dodawany jest na początek akumulatora
+% w kolejności od lewej do prawej.
+% W efekcie ostatni element wyląduje na początku akumulatora
+odwróć([H|T], Acc, Result) :-
+    NewAcc = [H|Acc],
+    odwróć(T, NewAcc, Result).
+odwróć(List, Result) :-
+    odwróć(List, [], Result).
+
+palindrom(L):-
+    odwróć(L,X),
+	X = L.
