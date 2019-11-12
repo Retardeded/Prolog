@@ -97,3 +97,22 @@ podlista([_|T1], T2) :-
 % Element spełnia warunek, jeśli jest 
 % zmienną bez przypisanej wartości
 % var/1 to wbudowany predykat.
+
+
+
+
+% 1. w pustej liście nia ma co filtrować
+odetnij_z_lewej(X,[], []).
+% 2. element spełnia warunek, przekładamy go
+odetnij_z_lewej(X,T1, T2]) :-
+    \+satisfies_condition(X,T1,T2),
+    append(T1,[_],T2),
+    odetnij_z_lewej(X,T1,T2).
+% 3. element nie spełnia warunku, ignorujemy go
+
+% Element spełnia warunek, jeśli jest 
+% zmienną bez przypisanej wartości
+% var/1 to wbudowany predykat
+satisfies_condition(X,T1,T2) :- length(T1, N),length(T2, M),
+    NewN is N + X,
+    NewN is M.
