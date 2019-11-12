@@ -58,3 +58,11 @@ usuń_wszystkie(X,[H|T1], T2) :-
 % zmienną bez przypisanej wartości
 % var/1 to wbudowany predykat
 satisfies_condition(X,H) :- X \= H.
+
+
+% 1. w pustej liście nia ma co filtrować
+% 2. element spełnia warunek, przekładamy go
+dodaj(X, [H|T1], [H|T2]) :-
+    dodaj(X,T1,T2).
+% 3. element nie spełnia warunku, ignorujemy go
+dodaj(X,T,[X|T]).
