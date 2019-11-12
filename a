@@ -81,3 +81,19 @@ odwróć(List, Result) :-
 palindrom(L):-
     odwróć(L,X),
 	X = L.
+	
+	
+	
+	
+	% 1. w pustej liście nia ma co filtrować
+podlista([], []).
+% 2. element spełnia warunek, przekładamy go
+podlista([H|T1], [H|T2]) :-
+    podlista(T1,T2).
+% 3. element nie spełnia warunku, ignorujemy go
+podlista([_|T1], T2) :-
+    podlista(T1,T2).
+
+% Element spełnia warunek, jeśli jest 
+% zmienną bez przypisanej wartości
+% var/1 to wbudowany predykat.
