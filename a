@@ -30,3 +30,31 @@ max(-W1, A2-W2, A2-W2) :- W2 > W1.
 
 
 fail. -> false.
+
+
+% 1. w pustej liście nia ma co filtrować
+usuń(_, [], []).
+% 2. element spełnia warunek, przekładamy go
+usuń(X, [H|T1], [H|T2]) :-
+    X \= H,
+    usuń(X,T1,T2).
+% 3. element nie spełnia warunku, ignorujemy go
+usuń(X,[X|T], T).
+
+
+
+% 1. w pustej liście nia ma co filtrować
+usuń_wszystkie(X,[], []).
+% 2. element spełnia warunek, przekładamy go
+usuń_wszystkie(X,[H|T1], [H|T2]) :-
+    satisfies_condition(X,H),
+    usuń_wszystkie(X,T1,T2).
+% 3. element nie spełnia warunku, ignorujemy go
+usuń_wszystkie(X,[H|T1], T2) :-
+    \+ satisfies_condition(X,H),
+    usuń_wszystkie(X,T1,T2).
+
+% Element spełnia warunek, jeśli jest 
+% zmienną bez przypisanej wartości
+% var/1 to wbudowany predykat
+satisfies_condition(X,H) :- X \= H.
