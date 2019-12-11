@@ -116,3 +116,12 @@ odetnij_z_lewej(X,T1, T2]) :-
 satisfies_condition(X,T1,T2) :- length(T1, N),length(T2, M),
     NewN is N + X,
     NewN is M.
+    
+    
+    
+    
+    
+    
+    
+    
+    zaworski@mops184:~$ scp lab.txt b1@lab.zaworski:~
