@@ -1,294 +1,126 @@
-{\rtf1\ansi\deff3\adeflang1025
-{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\froman\fprq2\fcharset2 Symbol;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\froman\fprq2\fcharset0 Liberation Serif{\*\falt Times New Roman};}{\f4\fswiss\fprq2\fcharset0 Liberation Sans{\*\falt Arial};}{\f5\fnil\fprq2\fcharset0 Microsoft YaHei;}{\f6\fnil\fprq2\fcharset0 Arial;}{\f7\fswiss\fprq0\fcharset128 Arial;}}
-{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}
-{\stylesheet{\s0\snext0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1 Normal;}
-{\s15\sbasedon0\snext16\dbch\af5\dbch\af6\afs28\sb240\sa120\keepn\loch\f4\fs28 Heading;}
-{\s16\sbasedon0\snext16\sl276\slmult1\sb0\sa140 Text Body;}
-{\s17\sbasedon16\snext17\dbch\af7\sl276\slmult1\sb0\sa140 List;}
-{\s18\sbasedon0\snext18\dbch\af7\afs24\ai\sb120\sa120\noline\fs24\i Caption;}
-{\s19\sbasedon0\snext19\dbch\af7\noline Index;}
-{\s20\sbasedon0\snext20\tqc\tx4986\tqr\tx9972\noline Header and Footer;}
-{\s21\sbasedon20\snext21\tqc\tx4986\tqr\tx9972\noline Footer;}
-}{\*\generator LibreOffice/6.3.2.2$Windows_x86 LibreOffice_project/98b30e735bda24bc04ab42594c85f7fd8be07b9c}{\info{\creatim\yr0\mo0\dy0\hr0\min0}{\revtim\yr2020\mo1\dy13\hr15\min37}{\printim\yr0\mo0\dy0\hr0\min0}}{\*\userprops}\deftab709
-\viewscale100
-{\*\pgdsctbl
-{\pgdsc0\pgdscuse451\pgwsxn12240\pghsxn15840\marglsxn1134\margrsxn1134\margtsxn1134\margbsxn1134\pgdscnxt0 Default Style;}}
-\formshade\paperh15840\paperw12240\margl1134\margr1134\margt1134\margb1134\sectd\sbknone\sectunlocked1\pgndec\pgwsxn12240\pghsxn15840\marglsxn1134\margrsxn1134\margtsxn1134\margbsxn1134\ftnbj\ftnstart1\ftnrstcont\ftnnar\aenddoc\aftnrstcont\aftnstart1\aftnnrlc
-{\*\ftnsep\chftnsep}\pgndec\pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-peano_number(zero, 0).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-peano_number(s(X), Y) :- }
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-peano_number(X, Number),}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-Y is 1 + Number.}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+peano_number(zero, 0).
+peano_number(s(X), Y) :- 
+    peano_number(X, Number),
+    Y is 1 + Number.
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-peano_add(zero, X, X).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-peano_add(X, zero, X).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-peano_add(s(X),s(Y),s(s(R))) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-peano_add(X,Y,R).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+peano_add(zero, X, X).
+peano_add(X, zero, X).
+peano_add(s(X),s(Y),s(s(R))) :-
+    peano_add(X,Y,R).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-peano_add(X, zero, X).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-peano_add(X, s(Y), s(Z)) :- peano_add(X, Y, Z).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+peano_add(X, zero, X).
+peano_add(X, s(Y), s(Z)) :- peano_add(X, Y, Z).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-peano_times(X, zero, zero).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-peano_times(zero, X, zero).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-peano_times(X,s(Y), Result) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-\tab peano_times(X,Y,R),}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-peano_add(X,R,Result).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+peano_times(X, zero, zero).
+peano_times(zero, X, zero).
+peano_times(X,s(Y), Result) :-
+	peano_times(X,Y,R),
+    peano_add(X,R,Result).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-process_command(list) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-\tab writeln('Znajomi:'),}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-  }{\loch
-foreach(}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-\tab \tab jest_znajomym(Imie), }
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-\tab   (format('- ~w', [Imie]), nl)}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-\tab ).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+process_command(list) :-
+	writeln('Znajomi:'),
+  foreach(
+		jest_znajomym(Imie), 
+	  (format('- ~w', [Imie]), nl)
+	).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-% sprawdza czy daty na siebie nachodza}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-date_overlaps(A-B, C-D) :- A < D, B > C.}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+% sprawdza czy daty na siebie nachodza
+date_overlaps(A-B, C-D) :- A < D, B > C.
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-% oblicza wiek autora (narodziny-smierc)}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-wiek(A-B, Wiek) :- Wiek is B - A.}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+% oblicza wiek autora (narodziny-smierc)
+wiek(A-B, Wiek) :- Wiek is B - A.
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-% sprawdza kt\u243\'f3ry autor \u380\'3fy\u322\'3f d\u322\'3fu\u380\'3fej}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-max(A1-W1, _-W2, A1-W1) :- W1 >= W2.}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-max(_-W1, A2-W2, A2-W2) :- W2 > W1.}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+% sprawdza który autor żył dłużej
+max(A1-W1, _-W2, A1-W1) :- W1 >= W2.
+max(_-W1, A2-W2, A2-W2) :- W2 > W1.
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-setof(Imie, (A, B, C, D)^ksiazka(A, B, autor(Imie, C), D), Autorzy).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+setof(Imie, (A, B, C, D)^ksiazka(A, B, autor(Imie, C), D), Autorzy).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-findall(Tytul, (ksiazka(_, Tytul, autor(_, _-Smierc), wydanie(_, Wydana)), Wydana > Smierc), Tytuly).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+findall(Tytul, (ksiazka(_, Tytul, autor(_, _-Smierc), wydanie(_, Wydana)), Wydana > Smierc), Tytuly).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-findall(Autor-Ksiazki, bagof(Tytul, (A, B, C, D)^(ksiazka(A, Tytul, autor(Autor, C), D)), Ksiazki), Lista).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+findall(Autor-Ksiazki, bagof(Tytul, (A, B, C, D)^(ksiazka(A, Tytul, autor(Autor, C), D)), Ksiazki), Lista).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-setof(Autor1-Autor2, (A, B, C, D, E, F, G, H, I, J)^(ksiazka(A, B, autor(Autor1, C-D), E), ksiazka(F, G, autor(Autor2, H-I), J), Autor1 \\= Autor2, date_overlaps(C-D, H-I), C=<H), Lista).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+setof(Autor1-Autor2, (A, B, C, D, E, F, G, H, I, J)^(ksiazka(A, B, autor(Autor1, C-D), E), ksiazka(F, G, autor(Autor2, H-I), J), Autor1 \= Autor2, date_overlaps(C-D, H-I), C=<H), Lista).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-findall(Autor-Wiek, (ksiazka(_, _, autor(Autor, Zycie), _), wiek(Zycie, Wiek)), Lista), foldl(max, Lista, none-0, Wynik). }
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-% d\u322\'3fugo\u347\'3f\u263\'3f listy}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-list_number([],0).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-list_number([_|T], Y) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-list_number(T, Z),}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-Y is Z + 1.}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+findall(Autor-Wiek, (ksiazka(_, _, autor(Autor, Zycie), _), wiek(Zycie, Wiek)), Lista), foldl(max, Lista, none-0, Wynik). 
+% długość listy
+list_number([],0).
+list_number([_|T], Y) :-
+list_number(T, Z),
+Y is Z + 1.
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-list_add([], L, L). }
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-list_add([H|T], L2, [H|TL]) :- list_add(T, L2, TL). }
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+list_add([], L, L). 
+list_add([H|T], L2, [H|TL]) :- list_add(T, L2, TL). 
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-one(_,1).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-add(A,B,C) :- C is A+B.}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+one(_,1).
+add(A,B,C) :- C is A+B.
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-list_number_mfr(L, Length) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-maplist(one, L, }{\loch
-L2}{\loch
-),}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-foldl(add, }{\loch
-L2}{\loch
-, 0, Length).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+list_number_mfr(L, Length) :-
+maplist(one, L, L2),
+foldl(add, L2, 0, Length).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-connect(H, L, [H|L]).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+connect(H, L, [H|L]).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-list_add_mfr(L1, L2, L3) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-foldl(connect, L1, [], RL1),}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-foldl(connect, RL1, L2, L3).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+list_add_mfr(L1, L2, L3) :-
+foldl(connect, L1, [], RL1),
+foldl(connect, RL1, L2, L3).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-usun(_, [], []).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-usun(Term, [Term|Tail], Tail).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-usun(Term, [Head|Tail], [Head|Result]) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-  }{\loch
-Term \\= Head,}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-  }{\loch
-usun(Term, Tail, Result).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+usun(_, [], []).
+usun(Term, [Term|Tail], Tail).
+usun(Term, [Head|Tail], [Head|Result]) :-
+  Term \= Head,
+  usun(Term, Tail, Result).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-usun_wszystkie(_, [], []).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+usun_wszystkie(_, [], []).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-usun_wszystkie(Term, [Term|Tail], Result) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-usun_wszystkie(Term, Tail, Result).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+usun_wszystkie(Term, [Term|Tail], Result) :-
+    usun_wszystkie(Term, Tail, Result).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-usun_wszystkie(Term, [Head|Tail], [Head|Result]) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-Term \\= Head,}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-usun_wszystkie(Term, Tail, Result).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+usun_wszystkie(Term, [Head|Tail], [Head|Result]) :-
+    Term \= Head,
+    usun_wszystkie(Term, Tail, Result).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-dodaj(Element, Lista, [Element|Lista]).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+dodaj(Element, Lista, [Element|Lista]).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-dodaj(Term, [Head|Tail],[Head|New_Tail]):-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-dodaj(Term,Tail,New_Tail).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+dodaj(Term, [Head|Tail],[Head|New_Tail]):-
+    dodaj(Term,Tail,New_Tail).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-palindrom(L):- reverse(L, L).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
- }
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-podlista([],[]).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-podlista([H|T],[H|Result]):-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-podlista(T,Result).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-podlista([_|T],Result):-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-podlista(T,Result).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-odetnij_z_lewej(0, Lista, Lista).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+palindrom(L):- reverse(L, L).
+ 
+podlista([],[]).
+podlista([H|T],[H|Result]):-
+    podlista(T,Result).
+podlista([_|T],Result):-
+    podlista(T,Result).
+odetnij_z_lewej(0, Lista, Lista).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-odetnij_z_lewej(Term, [_|T], Result) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-Term1 is Term - 1,}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-odetnij_z_lewej(Term1, T, Result).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+odetnij_z_lewej(Term, [_|T], Result) :-
+    Term1 is Term - 1,
+    odetnij_z_lewej(Term1, T, Result).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-odetnij_z_prawej(0, Lista, Lista).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-odetnij_z_prawej(Term, Lista, Result) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-Term1 is Term - 1,}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-append(MniejszaLista,[_], Lista),}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-odetnij_z_prawej(Term1,MniejszaLista,Result).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+odetnij_z_prawej(0, Lista, Lista).
+odetnij_z_prawej(Term, Lista, Result) :-
+    Term1 is Term - 1,
+    append(MniejszaLista,[_], Lista),
+    odetnij_z_prawej(Term1,MniejszaLista,Result).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-odetnij_z_prawej(A,B,C) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-length(D,A),}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-append(C,D,B).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+odetnij_z_prawej(A,B,C) :-
+    length(D,A),
+    append(C,D,B).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-zawiera(L,S):-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{
-    }{\loch
-append([_,S,_],L).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+zawiera(L,S):-
+    append([_,S,_],L).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-usun(X,[X|Reszta],Reszta).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-usun(X,[Y|Ogon],[Y|Reszta]) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-\tab usun(X,Ogon,Reszta).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+usun(X,[X|Reszta],Reszta).
+usun(X,[Y|Ogon],[Y|Reszta]) :-
+	usun(X,Ogon,Reszta).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-permutacja([],[]).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-permutacja(L,[X|P]) :-}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-\tab usun(X,L,L1),}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-\tab permutacja(L1,P).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar\loch
+permutacja([],[]).
+permutacja(L,[X|P]) :-
+	usun(X,L,L1),
+	permutacja(L1,P).
 
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-podziel([X], [X], []).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-podziel([X,Y], [X], [Y]).}
-\par \pard\plain \s0\hich\af3\dbch\af8\langfe2052\dbch\af6\afs24\alang1081\nowidctlpar\hyphpar0\ltrpar\cf0\loch\f3\fs24\lang1033\kerning1\ql\ltrpar{\loch
-podziel([X,Y|A], [X|B], [Y|C]) :- podziel(A, B, C).}
-\par }
+podziel([X], [X], []).
+podziel([X,Y], [X], [Y]).
+podziel([X,Y|A], [X|B], [Y|C]) :- podziel(A, B, C).
