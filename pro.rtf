@@ -124,3 +124,188 @@ permutacja(L,[X|P]) :-
 podziel([X], [X], []).
 podziel([X,Y], [X], [Y]).
 podziel([X,Y|A], [X|B], [Y|C]) :- podziel(A, B, C).
+
+is_empty_diff(L-E) :- L == E. 
+
+length_diff(L, 0) :- 
+is_empty_diff(L). 
+
+length_diff([H|T]-E, L) :- 
+not(is_empty_diff([H|T]-E)), 
+length_diff(T-E,PL), 
+L is PL + 1. 
+
+member_diff(X,[X|T]-E):- 
+not(is_empty_diff([X|T]-E)). 
+
+member_diff(Y,[H|T]-E):- 
+not(is_empty_diff([H|T]-E)), 
+member_diff(Y,T-E). 
+
+obetnij_liste(Lista, KrotszaLista) :-
+    length(Lista, Dlugosc), Dlugosc > 1,
+    append([_|KrotszaLista], [_], Lista).
+
+dlugosc([], 0).
+dlugosc([_|Rest], Wynik) :-
+    dlugosc(Rest, Result),
+    Wynik is Result + 1.
+
+sklej([], X, X).
+sklej([H1|T1], List2, [H1|Result]) :-
+    sklej(T1, List2, Result).
+
+podziel([], _, [], []).
+podziel(Source, Dlugosc, List1, List2) :-
+    dlugosc(List2, Dlugosc),
+    sklej(List1, List2, Source).
+
+jest_nizszy(budynek(_, _, W1, _), budynek(_, _, W2, _)) :- W1 < W2.
+:- op(500, xfy, jest_nizszy).
+
+ktory_budynek_jest_nizszy(X, X, X).
+ktory_budynek_jest_nizszy(B1, B2, Result) :-
+    (B1 jest_nizszy B2) -> Result = B1 ; Result = B2.
+
+najnizszy(List, Result) :- nth1(1, List, First), foldl(ktory_budynek_jest_nizszy, List, First, Result).
+
+zakres(Stop, Stop, [Stop]) :- !.
+zakres(Start, Stop, [Start|Lista]) :-
+    Start1 is Start + 1,
+    zakres(Start1, Stop, Lista).
+
+podwojna(List) :-
+	append(A, B, List), A = B.
+
+:- op(300, xf, jest_kobieta).
+:- op(300, xf, jest_mezczyzna).
+
+wspolne_pokolenie(A, A) :- !, fail.
+wspolne_pokolenie(A, B) :-
+    dziecko(A, P), dziecko(B, P).
+wspolne_pokolenie(A, B) :-
+	dziecko(A, P1), dziecko(B, P2), wspolne_pokolenie(P1, P2).
+
+neg(Q) :- call(Q), !, false;true. 
+
+ifelse(Warunek,Prawda,Falsz):- call(Warunek),!,Prawda;Falsz. 
+
+
+filtruj(X) :- X > 0. 
+% Filtrowanie 
+include(filtruj, [1, -1, 3, -4, 5], Wynik). 
+
+mapuj(X,Y) :- Y is X * 2. 
+% Mapowanie 
+maplist(mapuj, [1, -1, 3, -4, 5], Wynik). 
+
+redukuj(X1, X2, Wynik) :- Wynik is X1 * X2. 
+% Redukowanie 
+foldl(redukuj, [1, -1, 3, -4, 5], 1, Wynik). 
+
+length(Lista, 5),
+format('Przed pętlą: ~w\n', [Lista]),
+foreach(between(1, 5, I), (
+	nth1(I, Lista, I) 
+)),
+format('Po pętli: ~w\n', [Lista]).
+
+foo(X,Y) :- Y is X*2. % funkcja do mapowania
+map([],[]) % przypadek bazowy
+map([H1|T1],[H2|T2]) :-
+		foo(H1,H2), % przypisanie wartośći do H2
+		map(T1,T2). % mapowanie ogonów list, czyli dalsza rekurencja
+
+filter([],[]).               % przypadek bazowy, przepisanie
+filter([H|T],[H|Wynik]) :-
+		condition(H),            % sprawdzamy, czy głowa spełnia warunek
+		filter(T,Wynik).         % jeśli tak to wykonujemy rekurencje dalej
+filter([H|T],Wynik) :-
+		\+ condition(H),         % nie spełnia warunku -> olewamy i lecimy dalej
+		filter(T,Wynik).
+
+odwroc([],Acc,Acc).
+odwroc([H|T],Acc,Result) :-
+		NewAcc = [H|Acc],    % aktualizujemy: dodajemy H przed Acc
+		odwroc(T,NewAcc,Result).
+odwroc(List,Result) :-    %fasada
+		odwroc(List,[],Result).
+
+mapuj(_, [], []).                       % warunek zerowy
+mapuj(Predykat, [H|T], [MH|MT]) :-      % Predykat -> funkcja mapujaca
+    Zapytanie =.. [Predykat, H, MH],    % tworzymy zapytanie Predykat(H,MH)
+    call(Zapytanie),                    % wywolujemy to zapytanie
+    mapuj(Predykat, T, MT).             % rekurencyjie wywolujemy to dalej
+
+razy_dwa(X,Y) :- Y is X * 2.
+
+?- mapuj(razy_dwa, [1,2,3], Wynik).
+zwieksz(X, Result) :- Result is X + 1.
+dodaj_jeden(X, Result):- maplist(zwieksz, X, Result).
+
+jest_dodatni(X) :- X >= 0.
+jest_ujemny(X) :- X < 0.
+
+podziel(Lista, Dodatnie, Ujemne) :- include(jest_dodatni, Lista, Dodatnie), include(jest_ujemny, Lista, Ujemne).
+
+:- op(100, xfy, w).
+
+wewnetrzna(Wewn, Zewn) :- w(Wewn, Zewn).
+wewnetrzna(Wewn, Zewn) :-
+    w(Wewn, P),
+    wewnetrzna(P, Zewn).
+
+zewn(Lalka, 0) :- \+ w(Lalka, _), !.
+zewn(Lalka, Rozmiar1) :-
+    w(Lalka, InnaLalka),
+    zewn(InnaLalka, Rozmiar),
+    Rozmiar1 is Rozmiar + 1.
+
+wewn(Lalka, 0) :- \+ w(_, Lalka), !.
+wewn(Lalka, Rozmiar1) :-
+    w(InnaLalka, Lalka),
+    wewn(InnaLalka, Rozmiar),
+    Rozmiar1 is Rozmiar + 1.
+
+rozmiar_grupy(Lalka, Rozmiar) :-
+    zewn(Lalka, Z),
+    wewn(Lalka, W),
+    Rozmiar is Z + W + 1.
+
+znajdz_element([], _, _) :- fail.
+znajdz_element([H|_], 1, H).
+znajdz_element([_|T], Index, Element) :-
+    Decremented is Index - 1,
+    znajdz_element(T, Decremented, Element).
+
+podziel(List, 0, [], List) :- !.
+podziel([H|T], Len, [H|X], List2) :-
+	Len > 0,
+	Len1 is Len - 1,
+	podziel(T, Len1, X, List2).
+
+:- op(100, xfy, bezposredniDo).
+
+
+
+polaczenie(A, B) :- bezposredniDo(A, B); bezposredniDo(B, A).
+polaczenie(A, B) :-
+    bezposredniDo(A, C);bezposredniDo(C,A),
+    polaczenie(C, B),!.
+
+umiesc(E, List, 1, [E|List]).
+
+umiesc(E, [H|T], Index, Result) :-
+    Decremented is Index - 1,
+    umiesc(E, T, Decremented, NewTail),
+    Result = [H|NewTail].
+
+podwoj(X, [X, X]).
+
+podwoj_elementy([], []).
+podwoj_elementy(List, Result) :- maplist(podwoj, List, Mapped), flatten(Mapped, Result)
+
+to_samo_miejsce(osoba(_, _, _, _, wydarzenie(MU, _)-wydarzenie(MS, _))) :- MU == MS.
+
+lista_osob_to_samo_miejsce(ListaOsob, ZnalezioneOsoby) :-
+    include(to_samo_miejsce, ListaOsob, ZnalezioneOsoby).
