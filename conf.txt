@@ -1,0 +1,425 @@
+begin;
+
+CREATE SCHEMA confa;
+
+CREATE TABLE confa.clients (
+ clientid INTEGER PRIMARY KEY,
+ name VARCHAR(80),
+ country VARCHAR(40),
+ city VARCHAR(40),
+ address VARCHAR(80),
+ postalcode VARCHAR(6),
+ phone VARCHAR(15),
+ isuniversity BOOLEAN
+);
+CREATE TABLE confa.conferences (
+ conferenceid INTEGER PRIMARY KEY,
+ name VARCHAR(200),
+ acronym VARCHAR(10),
+ country VARCHAR(40),
+ city VARCHAR(40),
+ venue VARCHAR(80),
+ startdate DATE,
+ enddate DATE
+);
+CREATE TABLE confa.participants (
+ participantid INTEGER PRIMARY KEY,
+ firstname VARCHAR(40),
+ lastname VARCHAR(40),
+ idcardnumber VARCHAR(15),
+ isstudent BOOLEAN,
+ phone VARCHAR(15),
+ email VARCHAR(40)
+);
+CREATE TABLE confa.reservations (
+ reservationid INTEGER PRIMARY KEY,
+ conferenceid INTEGER REFERENCES confa.conferences (conferenceid),
+ participantid INTEGER REFERENCES confa.participants (participantid),
+ clientid INTEGER,
+ arrivaldate DATE,
+ departuredate DATE,
+ ispaid BOOLEAN,
+ iscancelled BOOLEAN
+);
+CREATE TABLE confa.conferencedays (
+ conferencedayid INTEGER PRIMARY KEY,
+ conferenceid INTEGER REFERENCES confa.conferences (conferenceid),
+ description VARCHAR(300),
+ eventdate DATE,
+ starttime TIME,
+ endtime TIME,
+ price NUMERIC(6,2),
+ studentdiscount NUMERIC(5,2),
+ maxparticipantsnumber INTEGER
+);
+CREATE TABLE confa.dayreservations (
+ reservationid INTEGER REFERENCES confa.reservations (reservationid),
+ conferencedayid INTEGER REFERENCES confa.conferencedays (conferencedayid),
+ participantid INTEGER REFERENCES confa.participants (participantid),
+ specialdiscount NUMERIC(5,2),
+ iscancelled BOOLEAN,
+ PRIMARY KEY (reservationid, conferencedayid, participantid)
+);
+CREATE TABLE confa.conferenceevents (
+ conferenceeventid INTEGER PRIMARY KEY,
+ conferenceid INTEGER REFERENCES confa.conferences (conferenceid),
+ description VARCHAR(300),
+ eventdate DATE,
+ starttime TIME,
+ endtime TIME,
+ price NUMERIC(6,2),
+ studentdiscount NUMERIC(5,2),
+ maxparticipantsnumber INTEGER
+);
+CREATE TABLE confa.eventsreservations (
+ reservationid INTEGER REFERENCES confa.reservations (reservationid),
+ conferenceeventid INTEGER REFERENCES confa.conferenceevents (conferenceeventid),
+ participantid INTEGER REFERENCES confa.participants (participantid),
+ specialdiscount NUMERIC(5,2),
+ iscancelled BOOLEAN,
+ PRIMARY KEY (reservationid, conferenceeventid, participantid)
+);
+
+commit;
+
+
+copy clients (clientid, name, country, city, address, postalcode, phone, isuniversity) from stdin with
+(NULL '', delimiter '|');
+1|AGH w Krakowie|Polska|Kraków|AG 30|30-059|0700444000|TRUE
+2|UJ w Krakowie|Polska|Wieliczka|UJ 50|00-999|0700444000|FALSE
+\.
+copy conferences (conferenceid, name, acronym, country, city, venue, startdate, enddate) from stdin
+with (NULL '', delimiter '|');
+1|Konferencja 1|K1|Polska|Kraków|ICE Kraków|2019-01-01|2019-01-03
+2|Konferencja 2|K2|Polska|Warszawa|ICE Warszawa|2019-02-01|2019-02-03
+3|Konferencja 3|K3|Polska|Wrocław|ICE Wrocław|2019-03-01|2019-03-03
+4|Konferencja 4|K4|Polska|Rzeszów|ICE Rzeszów|2019-04-01|2019-04-03
+\.
+copy participants (participantid, firstname, lastname, idcardnumber, isstudent, phone, email) from
+stdin with (NULL '', delimiter '|');
+1|Ala|Kowalska|456789|TRUE|0700444000|ala@kowalska.pl
+2|Dominika|Kowalska|426789|FALSE|0700444000|dominika@kowalska.pl
+3|Małgorzata|Kowalska|416789|TRUE|0700444000|malgorzata@kowalska.pl
+\.
+copy reservations (reservationid, conferenceid, participantid, clientid, arrivaldate, departuredate,
+ispaid, iscancelled) from stdin with (NULL '', delimiter '|');
+1|1|1|1|2019-01-01|2019-01-04|TRUE|FALSE
+2|2|1|1|2019-02-01|2019-02-04|TRUE|FALSE
+3|3|2|2|2019-03-01|2019-03-04|TRUE|FALSE
+4|4|3|2|2019-04-01|2019-04-04|TRUE|FALSE
+\.
+copy conferencedays (conferencedayid, conferenceid, description, eventdate, starttime, endtime,
+price, studentdiscount, maxparticipantsnumber) from stdin with (NULL '', delimiter '|');
+1|1|Opis konferencji 1|2019-01-01|08:00|17:00|300.00|50.00|50
+2|1|Opis konferencji 1|2019-01-02|08:00|17:00|300.00|50.00|60
+3|1|Opis konferencji 1|2019-01-03|08:00|17:00|300.00|50.00|50
+4|2|Opis konferencji 2|2019-02-01|08:00|17:00|400.00|50.00|50
+5|2|Opis konferencji 2|2019-02-02|08:00|17:00|500.00|50.00|80
+6|2|Opis konferencji 2|2019-02-03|08:00|17:00|700.00|50.00|50
+7|3|Opis konferencji 3|2019-03-01|08:00|17:00|150.00|50.00|10
+8|3|Opis konferencji 3|2019-03-02|08:00|17:00|780.00|50.00|50
+9|3|Opis konferencji 3|2019-03-03|08:00|17:00|870.00|50.00|30
+10|4|Opis konferencji 4|2019-04-01|08:00|17:00|900.00|50.00|50
+11|4|Opis konferencji 4|2019-04-02|08:00|17:00|400.00|50.00|30
+12|4|Opis konferencji 4|2019-04-03|08:00|17:00|200.00|50.00|50
+\.
+copy dayreservations (reservationid, conferencedayid, participantid, specialdiscount, iscancelled)
+from stdin with (NULL '', delimiter '|');
+1|1|1|0.13|FALSE
+2|2|2|0.15|FALSE
+3|3|3|0.17|FALSE
+4|4|1|0.18|FALSE
+2|4|2|0.07|FALSE
+\.
+copy conferenceevents (conferenceeventid, conferenceid, description, eventdate, starttime, endtime,
+price, studentdiscount, maxparticipantsnumber) from stdin with (NULL '', delimiter '|');
+1|1|Wyjście do kina|2019-01-01|12:00|14:00|77.00|0.20|20
+2|2|Wyjście do ZOO|2019-02-01|12:00|14:00|75.00|0.20|60
+3|3|Wyjście do parku|2019-03-01|12:00|14:00|79.00|0.20|11
+4|4|Wyjście do muzeum|2019-04-01|12:00|14:00|78.00|0.20|11
+5|4|Wyjście do gabinetu profesora|2019-04-03|12:00|14:00|10.00|0.20|10
+\.
+copy eventsreservations (reservationid, conferenceeventid, participantid, specialdiscount,
+iscancelled) from stdin with (NULL '', delimiter '|');
+1|1|1|0.00|FALSE
+2|2|1|0.01|FALSE
+3|2|2|0.10|FALSE
+4|3|3|0.11|FALSE
+2|4|3|0.07|FALSE
+\.
+commit;
+
+
+
+
+WITH
+
+days AS (
+    SELECT
+        dr.reservationID,
+        SUM(cd.price * (1 - dr.specialdiscount - cd.studentdiscount)) as price
+    FROM
+        Reservations r1
+        INNER JOIN dayreservations dr ON r1.reservationid = dr.reservationid
+        INNER JOIN conferencedays cd ON dr.conferencedayid = cd.conferencedayid
+    WHERE
+        cd.conferenceid = 1
+        AND r1.iscancelled = false
+    GROUP BY dr.reservationid
+),
+
+events AS (
+    SELECT
+        er.reservationid,
+        SUM(ce.price * (1 - er.specialdiscount - ce.studentdiscount)) as price
+    FROM
+        reservations r2
+        INNER JOIN eventsreservations er ON r2.reservationID = er.reservationID
+        INNER JOIN conferenceevents ce ON er.conferenceeventID = ce.conferenceeventID
+    WHERE
+        ce.conferenceid = 1
+        AND r2.isCancelled = false
+    GROUP BY er.reservationid
+)
+
+SELECT AVG(days.price + COALESCE(events.price, 0)) as sredni_koszt FROM days LEFT JOIN events ON days.reservationid = events.reservationid
+
+with days as(
+select dr.reservationID,cd.conferenceID,
+sum(cd.price*(1-cd.studentDiscount*0.01+dr.specialDiscount)) as days_price
+from dayreservations as dr JOIN conferenceDays cd using(conferenceDayID)
+where cd.conferenceID = 1 and dr.iscancelled = false group by
+dr.reservationID,cd.conferenceID),
+events as(
+select er.reservationID,ce.conferenceID,
+sum(ce.price*(1-ce.studentDiscount+er.specialDiscount)) as ev_price from
+eventsreservations as er JOIN conferenceevents ce using(conferenceeventID)
+where ce.conferenceID = 1 and er.iscancelled = false group by
+er.reservationID,ce.conferenceID)
+SELECT avg(d.days_price+COALESCE(e.ev_price,0.00)) as cena FROM days d
+left JOIN events e USING(reservationID);
+
+
+CREATE OR REPLACE FUNCTION czy_jest_dzien()
+RETURNS TRIGGER AS
+$$
+DECLARE conf_day RECORD;
+DECLARE day_id INTEGER;
+BEGIN
+select conferenceDayID into day_id from ConferenceDays
+WHERE conferenceDayID in(select conferenceDayID from DayReservations where conferenceID
+in(select conferenceID from conferenceevents where conferenceeventID =
+new.conferenceeventID));
+select conferenceDayID,conferenceID,eventDate into conf_day from ConferenceDays
+WHERE conferenceDayID in(select conferenceDayID from DayReservations where
+participantID=new.participantID)
+and conferenceID in(select conferenceID from ConferenceEvents where conferenceEventID =
+new.conferenceEventID)
+and eventDate in(select eventDate from ConferenceEvents where conferenceEventID =
+new.conferenceEventID);
+if conf_day is null then
+insert into dayreservations values(new.reservationID, day_id, new.participantID,
+new.specialDiscount, false);
+end if;
+return new;
+END;
+$$LANGUAGE PLpgSQL;
+CREATE TRIGGER new3
+AFTER INSERT ON EventsReservations
+FOR EACH ROW
+EXECUTE PROCEDURE czy_jest_dzien();
+
+
+Podaj instrukcję wyświetlającą identyfikator dodatkowego wydarzenia, identyfikator konferencji
+której dotyczy oraz jego datę, który ma największą ilość rezerwacji.
+
+with tmp as(
+SELECT conferenceEventId, count(conferenceEventId) AS ilosc
+FROM EventsReservations GROUP BY conferenceEventID
+)
+SELECT tmp.ilosc, ce.conferenceEventID, ce.conferenceID, ce.eventDate
+FROM tmp
+NATURAL JOIN conferenceEvents ce group by tmp.ilosc,ce.conferenceEventID
+HAVING tmp.ilosc = (select max(tmp.ilosc) from tmp) ;
+
+with tmp as (
+SELECT conferenceEventId, COUNT(conferenceEventId) AS ilosc 
+FROM eventsReservations GROUP BY conferenceEventId
+)
+SELECT tmp.ilosc, ce.conferenceEventID, ce.conferenceID, ce.eventDate
+FROM tmp INNER JOIN conferenceEvents ce ON ce.conferenceeventid = tmp.conferenceeventid
+GROUP BY ce.conferenceeventid, tmp.ilosc
+HAVING tmp.ilosc = (SELECT MAX(tmp.ilosc) from tmp);
+
+
+SELECT c.conferenceeventid,c.conferenceid,c.eventdate,COUNT(*) FROM eventsreservations r
+	INNER JOIN conferenceevents c ON r.conferenceeventid=c.conferenceeventid 
+		GROUP BY c.conferenceeventid
+		ORDER BY COUNT(*) DESC LIMIT 1;
+
+
+podaj instrukcje ustawiajace atrybut endTime dla trzeciego (numer porzadkowy) dnia
+konferencji o nazwie 'Konferencja 1' na 19:00 (zalozmy ze bylo 18:00)
+
+UPDATE conferenceDays SET endTime = '19:00' WHERE conferencedayid = 3 AND conferenceid IN 
+(SELECT conferenceid FROM conference WHERE name = 'Konferencja 1')
+
+UPDATE conferencedays set endtime = '19:00' WHERE conferencedayid = 3 AND conferenceid
+IN(SELECT conferenceid FROM conferences WHERE name = 'Konferencja 1');
+
+
+Napisz wyzwalacz, który w trakcie dokonywania rezerwacji na dzien konferencji będzie
+sprawdzał, czy jest jeszcze wolne miejsce (czy suma dokonanych juz rezerwacji jest mniejsza
+od maxParticipantsNumber).
+
+CREATE OR REPLACE FUNCTION czy_jest_miejsce()
+RETURNS TRIGGER AS
+$$
+DECLARE maxP integer;
+DECLARE ilosc integer;
+BEGIN
+maxP := 0;
+Ilosc := 0;
+SELECT maxParticipantsNumber into maxP
+FROM conferenceDays WHERE conferenceDayID = new.ConferenceDayId;
+SELECT count(reservationid) into ilosc FROM DayReservations
+WHERE conferenceDayID = new.conferenceDayId;
+IF ilosc < maxP then
+RETURN new;
+Else
+RETURN null;
+END IF;
+END;
+$$ LANGUAGE PLpgSQL;
+CREATE TRIGGER sprawdz_miejsce
+BEFORE INSERT ON DayReservations
+for each row
+EXECUTE PROCEDURE czy_jest_miejsce();
+
+
+SELECT conferenceID, name FROM Conferences WHERE conferenceID IN(SELECT conferenceID
+FROM ConferenceEvents WHERE description ~* ' [a-z]{4}$');
+
+
+Wyświetl identyfikator rezerwacji, identyfikator uczestnika i identyfikator klienta dla tych, którym
+rezerwację opłacił ktoś inny.
+
+
+WITH tmp AS( SELECT r.reservationid,r.participantid,r.clientid,c.name, p.firstName,
+p.lastName from Clients c
+JOIN Reservations r ON r.clientid = c.clientid
+JOIN Participants p ON p.participantid = r.participantid )
+SELECT reservationid,participantid,clientid,name,firstName,lastName from tmp
+WHERE name NOT IN (SELECT firstName || ' ' || lastName AS name FROM participants WHERE
+participantid=tmp.participantid);
+
+przyklad 6
+
+Wyświetl wszystkie rezerwacje, które są zamówione na całe konferencje (arrivalDate i
+departureDate są takie same jak startDate i endDate w Conferences)
+
+SELECT r.reservationID, r.arrivalDate, r.departureDate, c.startDate,c.endDate FROM
+reservations r NATURAL JOIN conferences c WHERE r.arrivalDate = c.startDate and
+r.departureDate = c.endDate;
+
+
+przyklad 8
+Wyzwalacz, który sprawdza czy przy rezerwowaniu danego dnia konferencji dzien miesci się w
+przedziale dnia przyjazdu i odjazdu uczestnika
+
+CREATE OR REPLACE FUNCTION czy_sensowna_rezerwacja()
+RETURNS TRIGGER AS
+$$
+DECLARE dayDate date;
+DECLARE arrival date;
+DECLARE departure date;
+
+BEGIN
+
+SELECT eventDate into dayDate
+FROM ConferenceDays WHERE conferenceDayID = new.ConferenceDayId;
+
+SELECT arrivalDate,departureDate into arrival,departure
+FROM Reservations WHERE reservationID = new.reservationID;
+
+IF (dayDate, dayDate) OVERLAPS (arrival, departure) THEN
+RETURN new;
+Else
+RETURN null;
+END IF;
+END;
+$$ LANGUAGE PLpgSQL;
+
+CREATE TRIGGER sensowna_rezerwacja
+BEFORE INSERT ON DayReservations
+for each row
+EXECUTE PROCEDURE czy_sensowna_rezerwacja();
+
+Wyświetl dane dotyczące wydarzenia dodatkowego, gdzie zarezerwowane są wszystkie
+dostępne miejsca.
+
+with tmp as(
+SELECT conferenceEventId, count(*) AS ilosc
+FROM EventsReservations GROUP BY conferenceEventID
+)
+SELECT tmp.ilosc, ce.conferenceEventID, ce.conferenceID, ce.eventDate
+FROM tmp
+NATURAL JOIN conferenceEvents ce where tmp.ilosc = maxParticipantsNumber;
+
+
+CREATE OR REPLACE FUNCTION najdrozsze(in arg1 INTEGER)
+RETURNS TABLE(
+ID_KONFERENCJI INTEGER,
+OPIS VARCHAR(300),
+CENA NUMERIC(6,2)
+)
+AS $$
+DECLARE max_price NUMERIC(6,2);
+BEGIN
+SELECT max(price) INTO max_price
+FROM conferenceevents
+WHERE conferenceid = arg1;
+return query
+select conferenceID, description, price from
+conferenceevents where price=max_price and
+conferenceID in (select conferenceID from conferences
+where conferenceID = arg1);
+END;
+$$ LANGUAGE PLpgSQL;
+
+With tmp as(
+Select conferenceDayID, count(participantID) as ilosc from dayReservations group by
+conferenceDayID)
+Select avg(ilosc) from tmp;
+
+
+With tmp as(
+Select participantID, count(conferenceDayID) as ilosc from DayReservations group by
+participantId)
+Select p.participantID, p.firstName, p.lastName, tmp.ilosc from participants p
+NATURAL JOIN tmp
+WHERE p.participantID IN
+(select participantID from tmp group by participantID, tmp.ilosc
+Having tmp.ilosc = (select max(tmp.ilosc) from tmp));
+
+
+With tmp as(
+select clientID, count(participantID) as ilosc_uczestnikow from reservations where
+clientID in (select clientID from clients where isUniversity is true ) group by clientID
+)select clientID, name, isUniversity, ilosc_uczestnikow from clients natural join tmp;
+
+
+
+{A,C} -> B, D -> C {A,D} -> C, E -> D, E -> C, A-> C,
+{A,E} -> B, C -> B
+
+A+ = {A,B,C}
+B+ = {B}
+C+ = {C,B}
+D+ = {D,C,B}
+E+ = {E,D,C,B}
+
+
+
+
+
