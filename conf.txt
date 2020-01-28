@@ -186,13 +186,13 @@ SELECT AVG(days.price + COALESCE(events.price, 0)) as sredni_koszt FROM days LEF
 
 with days as(
 select dr.reservationID,cd.conferenceID,
-sum(cd.price*(1-cd.studentDiscount*0.01+dr.specialDiscount)) as days_price
+sum(cd.price*(1-cd.studentDiscount-dr.specialDiscount)) as days_price
 from dayreservations as dr JOIN conferenceDays cd using(conferenceDayID)
 where cd.conferenceID = 1 and dr.iscancelled = false group by
 dr.reservationID,cd.conferenceID),
 events as(
 select er.reservationID,ce.conferenceID,
-sum(ce.price*(1-ce.studentDiscount+er.specialDiscount)) as ev_price from
+sum(ce.price*(1-ce.studentDiscount-er.specialDiscount)) as ev_price from
 eventsreservations as er JOIN conferenceevents ce using(conferenceeventID)
 where ce.conferenceID = 1 and er.iscancelled = false group by
 er.reservationID,ce.conferenceID)
@@ -385,8 +385,7 @@ WHERE conferenceid = arg1;
 return query
 select conferenceID, description, price from
 conferenceevents where price=max_price and
-conferenceID in (select conferenceID from conferences
-where conferenceID = arg1);
+conferenceID = arg1;
 END;
 $$ LANGUAGE PLpgSQL;
 
@@ -405,23 +404,29 @@ największą ilość dni). Jeśli takich uczestników jest więcej niż jeden, w
 
 
 With tmp as(
-Select participantID, count(conferenceDayID) as ilosc from DayReservations group by
-participantId)
-Select p.participantID, p.firstName, p.lastName, tmp.ilosc from participants p
-NATURAL JOIN tmp
-WHERE p.participantID IN
-(select participantID from tmp group by participantID, tmp.ilosc
-Having tmp.ilosc = (select max(tmp.ilosc) from tmp));
+Select d.participantID, count(participantid) as ilosc from DayReservations d 
+WHERE reservationId IN (SELECT reservationID FROM reservations WHERE ispaid = 'TRUE') 
+group by
+d.participantId)
+Select p.participantID, p.firstName, p.lastName, tmp.ilosc
+FROM tmp
+NATURAL JOIN participants p group by tmp.ilosc, p.participantId
+Having tmp.ilosc = (select max(tmp.ilosc) from tmp);
+
+
 
 Wyświetl clientID, name oraz isUniversity wszystkich uniwersytetów oraz ilość
 studentów(isStudent = TRUE), jakie wysłała (opłaciła) na poszczególne konferencje (wyświetl
 też id konferencji)
 
-
 With tmp as(
 select clientID, count(participantID) as ilosc_uczestnikow from reservations where
-clientID in (select clientID from clients where isUniversity is true ) group by clientID
+clientID in (select clientID from clients where isUniversity is true) and clientId in 
+(select clientId from participants where isstudent = 'TRUE')
+group by clientID
 )select clientID, name, isUniversity, ilosc_uczestnikow from clients natural join tmp;
+
+
 
 
 
@@ -433,8 +438,74 @@ B+ = {B}
 C+ = {C,B}
 D+ = {D,C,B}
 E+ = {E,D,C,B}
+{A,E}+ = {A,E,B,D,C} = H
+
+{A,B,C} {C,D,E}
+
+f1{A,B,C} = A -> C, C -> B
+f2{C,D,E} = D -> C, E -> D
+
+
+{A,C} -> B, D -> C {A,D} -> C, E -> D, E -> C, A-> C,
+{A,E} -> B, C -> B
+
+KLUCZ - {A,E}+ = {A,E,B,D,C} = H
 
 
 
+with tmp AS (SELECT conferenceEventId, count(conferenceEventId) as ilosc FROM
+eventReservations GROUP BY conferenceEventId
+)
+SELECT tmp.ilosc, conferenceEventId, conferenceId FROM tmp
+INNER JOIN conferenceEvents c on c.conferenceEventId = tmp.conferenceEventId
+GROUP BY tmp.ilosc, c.conferenceEventId
+HAVING tmp.ilosc = (select max(tmp.ilosc) from tmp); 
 
+UPDATE conferenceDays SET endTime = '19:00' WHERE conferenceDayId = 3  AND
+conferenceId IN 
+(SELECT conferenceId FROM conferences WHERE name = 'Konferencja 1')
+
+
+CREATE OR REPLACE FUNCTION czy_jest_miejsce()
+RETURNS TRIGGER AS
+$$
+
+DECLARE maxP
+DECLARE howMany
+
+BEGIN
+
+SELECT count(reservationId) FROM DaysReservations
+WHERE = conferenceDayId = new.conferenceDayId
+
+SELECT maxParicipantsNumber INTO maxP FROM ConferenceDays
+WHERE ConferenceDayId = New.conferenceDayId
+
+if maxP > howMany then
+	return new
+else 
+	return null
+endif
+
+END
+$$ LANGUAGE PLphSQL
+
+CREATE TRIGGER jest_miejsce
+BEFORE INSERT ON dayReserations
+for each row
+EXECUTE PROCEDURE czy_jest_miejsce();
+
+
+SELECT e.conferenceEventId, e.conferenceId, e.eventDate FROM conferenceEvents e 
+WHERE maxParticipantsNumber = 
+(SELECT COUNT(reservationId) FROM EventsReservations r 
+WHERE e.conferenceEventiD = r.conferenceEventiD);
+
+with tmp as(
+SELECT conferenceEventId, count(reservationID) AS ilosc
+FROM EventsReservations GROUP BY conferenceEventID
+)
+SELECT tmp.ilosc, ce.conferenceEventID, ce.conferenceID, ce.eventDate
+FROM tmp
+NATURAL JOIN conferenceEvents ce where tmp.ilosc = maxParticipantsNumber ;
 
