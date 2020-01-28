@@ -200,34 +200,28 @@ SELECT avg(d.days_price+COALESCE(e.ev_price,0.00)) as cena FROM days d
 left JOIN events e USING(reservationID);
 
 
-CREATE OR REPLACE FUNCTION czy_jest_dzien()
-RETURNS TRIGGER AS
-$$
-DECLARE conf_day RECORD;
-DECLARE day_id INTEGER;
-BEGIN
-select conferenceDayID into day_id from ConferenceDays
-WHERE conferenceDayID in(select conferenceDayID from DayReservations where conferenceID
-in(select conferenceID from conferenceevents where conferenceeventID =
+create or replace function onupdate()
+ returns trigger as
+ $$
+ declare
+day_id INTEGER;
+ begin
+ select * from DayReservations where ReservationID = NEW.ReservationID;
+ if not found then
+select conferenceDayID into day_id from DayReservations
+WHERE conferenceID in (select conferenceID from conferenceevents where conferenceeventID =
 new.conferenceeventID));
-select conferenceDayID,conferenceID,eventDate into conf_day from ConferenceDays
-WHERE conferenceDayID in(select conferenceDayID from DayReservations where
-participantID=new.participantID)
-and conferenceID in(select conferenceID from ConferenceEvents where conferenceEventID =
-new.conferenceEventID)
-and eventDate in(select eventDate from ConferenceEvents where conferenceEventID =
-new.conferenceEventID);
-if conf_day is null then
-insert into dayreservations values(new.reservationID, day_id, new.participantID,
-new.specialDiscount, false);
-end if;
-return new;
-END;
-$$LANGUAGE PLpgSQL;
-CREATE TRIGGER new3
-AFTER INSERT ON EventsReservations
-FOR EACH ROW
-EXECUTE PROCEDURE czy_jest_dzien();
+ insert into DaysReservations
+values(EventDay.reservationID,day_id,new.participantID, new.specialDiscount,
+new.iscancelled)
+ end if;
+ return NEW;
+ end;
+ $$
+ language 'plpgsql';
+create trigger nowy after insert on EventsReservation for each row execute procedure
+onupdate();
+
 
 
 Podaj instrukcję wyświetlającą identyfikator dodatkowego wydarzenia, identyfikator konferencji
