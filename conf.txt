@@ -366,6 +366,9 @@ SELECT tmp.ilosc, ce.conferenceEventID, ce.conferenceID, ce.eventDate
 FROM tmp
 NATURAL JOIN conferenceEvents ce where tmp.ilosc = maxParticipantsNumber;
 
+Funkcja zwracająca id konferencji, opis wydarzenia i cenę dodatkowego eventu, który jest
+najdroższy dla danej konferencji 
+(jeśli jest kilka z tą samą najwyższą ceną, wyświetli wszystkie)
 
 CREATE OR REPLACE FUNCTION najdrozsze(in arg1 INTEGER)
 RETURNS TABLE(
@@ -387,10 +390,18 @@ where conferenceID = arg1);
 END;
 $$ LANGUAGE PLpgSQL;
 
+Instrukcja wyświetlająca średnią ilość uczestników konferencji na jeden dzień (wśród
+wszystkich)
+
 With tmp as(
 Select conferenceDayID, count(participantID) as ilosc from dayReservations group by
 conferenceDayID)
 Select avg(ilosc) from tmp;
+
+
+Podaj dane uczestnika (participantID, firstName, lastName) i ilość dni na, na które ma
+wykupioną rezerwację (czyli isPaid TRUE), którego rezerwacja jest najdłuższa(zarezerwował
+największą ilość dni). Jeśli takich uczestników jest więcej niż jeden, wyświetl wszystkich.
 
 
 With tmp as(
@@ -401,6 +412,10 @@ NATURAL JOIN tmp
 WHERE p.participantID IN
 (select participantID from tmp group by participantID, tmp.ilosc
 Having tmp.ilosc = (select max(tmp.ilosc) from tmp));
+
+Wyświetl clientID, name oraz isUniversity wszystkich uniwersytetów oraz ilość
+studentów(isStudent = TRUE), jakie wysłała (opłaciła) na poszczególne konferencje (wyświetl
+też id konferencji)
 
 
 With tmp as(
