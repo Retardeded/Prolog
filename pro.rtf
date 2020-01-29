@@ -38,6 +38,7 @@ max(_-W1, A2-W2, A2-W2) :- W2 > W1.
 setof(Imie, (A, B, C, D)^ksiazka(A, B, autor(Imie, C), D), Autorzy).
 
 findall(Tytul, (ksiazka(_, Tytul, autor(_, _-Smierc), wydanie(_, Wydana)), Wydana > Smierc), Tytuly).
+//setof(Tytul, (A,B,C,D,Smierc,Wydana)^(ksiazka(A, Tytul, autor(B,C-Smierc),wydanie(D, Wydana)), Wydana > Smierc ), Tytuly).
 
 findall(Autor-Ksiazki, bagof(Tytul, (A, B, C, D)^(ksiazka(A, Tytul, autor(Autor, C), D)), Ksiazki), Lista).
 
