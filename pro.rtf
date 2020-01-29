@@ -310,3 +310,52 @@ to_samo_miejsce(osoba(_, _, _, _, wydarzenie(MU, _)-wydarzenie(MS, _))) :- MU ==
 
 lista_osob_to_samo_miejsce(ListaOsob, ZnalezioneOsoby) :-
     include(to_samo_miejsce, ListaOsob, ZnalezioneOsoby).
+
+
+func_call(F,Result):-
+    F =.. List,
+    append(List,[Result],X),
+    Zapytanie =.. X,
+    Zapytanie.
+    
+    
+    // func_call(append([1],[2,3]),X), X = [1,2,3].
+    
+    func_call(Fun,Where,X):-
+    Fun =.. List,
+    insert(X,Where,List,L),
+    Zapytanie =.. L,
+    Zapytanie.
+    
+    
+    klucz_mniejszy_od_wartosci(K-V) :- K < V.
+
+include_assoc(_,A,A):-
+    empty_assoc(A),!.
+
+include_assoc(P,A,R):-
+    del_min_assoc(A,K,V,A2),
+    (call(P,K-V) -> (include_assoc(P,A2,Res),(K,Res,V,R));
+		include_assoc(P,A2,R)).
+		
+		
+list_to_assoc([1-2,7-4,5-6], A), 
+include_assoc(klucz_mniejszy_od_wartosci, A, R), 
+assoc_to_list(R, Wynik),
+Wynik = [1-2,5-6].
+    
+
+
+reduce(_, [] ,E, E).
+reduce(Predykat, [H|T], Acc, Sum) :-
+    Zapytanie =.. [Predykat,H,Acc,NewAcc],
+    call(Zapytanie),
+    reduce(Predykat, T, NewAcc,Sum).
+    
+    
+    // dodaj(X,Y,Z) :- Z is X + Y.
+    // reduce(dodaj, [1,2,3], 0, X).
+    
+    
+    
+    
