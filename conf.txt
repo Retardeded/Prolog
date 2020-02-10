@@ -212,7 +212,7 @@ select conferenceDayID into day_id from DayReservations
 WHERE conferenceID in (select conferenceID from conferenceevents where conferenceeventID =
 new.conferenceeventID));
  insert into DaysReservations
-values(EventDay.reservationID,day_id,new.participantID, new.specialDiscount,
+values(new.reservationID,day_id,new.participantID, new.specialDiscount,
 new.iscancelled)
  end if;
  return NEW;
