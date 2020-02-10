@@ -522,8 +522,27 @@ select acronym, name, noOfDays, noOfEvents
 from pl left join p2
 where noOfEvents = (select max(noOfEvents) from p2);
 
-create trigger 
+create trigger check_reservation after update on Reservations
+for each row execute procedure f_check_reservation() returns trigger as
+$$
+begin
+    delete from DaysReservations
+    where reservationID = NEW.reservationID
+    and conferenceDayID in (
+      select conferenceDayID from ConferenceDays
+      where conferenceID = NEW.conferenceID
+      and eventDate not between NEW.arrivalDate and NEW.departureDate)
 
+    delete from EventsReservations
+    where reservationID = NEW.reservationID
+    and conferenceEventID in (
+      select conferenceEventID from ConferenceEvents
+      where conferenceID = NEW.conferenceID
+      and eventDate not beteween NEW.arrivalDate and NEW.departureDate
+
+    return null;
+end
+$$ language plpgsql;
 
 Podaj ciag instrukcji, które: (1) dodaja w systemie uzytkowników ˙ adam, ewa i karol; (2) tworza grupe uzytkowników ˙
 dzial_pomiarow; (3) dodaja trzech wymienionych pracowników do tej grupy; (4) odbieraja wszelkie prawa do tabel pomiary i ostrzezenia
