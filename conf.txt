@@ -503,3 +503,76 @@ SELECT tmp.ilosc, ce.conferenceEventID, ce.conferenceID, ce.eventDate
 FROM tmp
 NATURAL JOIN conferenceEvents ce where tmp.ilosc = maxParticipantsNumber ;
 
+with p1 as (
+select conferenceID, acronym, name, count(*) as noOfDays
+from Conferences natural join ConferenceDays
+where startDate between '2020-07-01' and '2002-07-31'
+or endDate between '202-07-01' and '202-07-31'
+group by conferenceID, acronym, name
+having count(*) >= 4
+),
+p2 as (
+select conferenceID, count(*) as noOfEvents
+from Conferences natural join ConferenceEvents
+where startDate between '2020-07-01' and '2020-07-31'
+or endDate between '2020-07-01' and '2020-07-31'
+group by conferenceID
+)
+select acronym, name, noOfDays, noOfEvents
+from pl left join p2
+where noOfEvents = (select max(noOfEvents) from p2);
+
+create trigger 
+
+
+Podaj ciag instrukcji, które: (1) dodaja w systemie uzytkowników ˙ adam, ewa i karol; (2) tworza grupe uzytkowników ˙
+dzial_pomiarow; (3) dodaja trzech wymienionych pracowników do tej grupy; (4) odbieraja wszelkie prawa do tabel pomiary i ostrzezenia
+wszystkim zarejestrowanym uzytkownikom; (5) przyznaja prawa przegladania, modyfikacji, dodawania rekordów i usuwania rekordów ˙
+dla wymienionych tabel grupie dzial_pomiarow
+
+create role adam login;
+create role ewa login;
+create role karol login;
+create role dzial_pomiarow;
+grant dzial_pomiarow to adam, ewa, karol;
+revoke all privileges on pomiary, ostrzezenia from public;
+grant select, update, insert, delete on pomiary, ostrzezenia to dzial_pomiarow;
+
+Podaj ciąg instrukcji, które (1) dodają w systemie użytkowników ewa, adam,
+anna; (2)tworzą grupę użytkowników dzial_zamowień; (3) dodają trzech
+wymienionych pracowników do tej grupy; (4) odbierają wszelkie prawa do tabel
+zamowione_meble, zamowione_paczki i zamowienia wszystkim
+zarejestrowanym użytkownikom;(5) przyznają prawa przeglądania, modyfikacji,
+dodawania rekordów i usuwania rekordów dla wymienionych tabel grupie
+dzial_zamowień.
+
+create role ewa login;
+create role adam login;
+create role anna login;
+create role dzial_zamowien;
+grant dzial_zamowien to ewa,adam,anna;
+revoke all privileges on zamowione_meble, zamowione_paczki, zamowienia from adam;
+revoke all privileges on zamowione_meble, zamowione_paczki, zamowienia from ewa;
+revoke all privileges on zamowione_meble, zamowione_paczki, zamowienia from, anna;
+grant select, insert, delete on zamowione_meble, zamowione_paczki, zamowienia to
+dzial_zamowien;
+
+
+ Podaj instrukcje: (1) tworz±c± u¿ytkownika karol, (2) dodaj±c± u¿ytkownika karol do grupy
+magazynierzy, (3) dodaj±c± u¿ytkownikowi karol prawa do wstawiania i aktualizacji rekordów w
+tabeli zamowione_paczki, (4) dodaj±c± grupie magazynierzy prawo przegl±dania rekordów w
+tabeli paczki.
+
+create role karol;
+grant magazynierzy to karol;
+grant insert, update on zamowione_paczki to karol;
+grant select on paczki to magazynierzy;
+
+Podaj instrukcje: (1) usuwaj±c± u¿ytkownika {karol} z grupy {magazynierzy}, (2) odbieraj±c±
+u¿ytkownikowi {karol} wszystkie uprawnienia do tabeli {elementy}, (3) usuwaj±c± (ca³kowicie)
+u¿ytkownika {karol}, (4) usuwaj±c± wszystkim u¿ytkownikom prawo przegl±dania tabeli {meble}.
+
+revoke magazynierzy from karol;
+revoke all privileges on elementy from karol;
+drop role karol;
+revole select on meble from public;
