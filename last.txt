@@ -1,0 +1,513 @@
+peano_number(zero, 0).
+peano_number(s(X), Y) :- 
+    peano_number(X, Number),
+    Y is 1 + Number.
+
+peano_add(zero, X, X).
+peano_add(X, zero, X).
+peano_add(s(X),s(Y),s(s(R))) :-
+    peano_add(X,Y,R).
+
+peano_add(X, zero, X).
+peano_add(X, s(Y), s(Z)) :- peano_add(X, Y, Z).
+
+peano_times(X, zero, zero).
+peano_times(zero, X, zero).
+peano_times(X,s(Y), Result) :-
+	peano_times(X,Y,R),
+    peano_add(X,R,Result).
+
+process_command(list) :-
+	writeln('Znajomi:'),
+  foreach(
+		jest_znajomym(Imie), 
+	  (format('- ~w', [Imie]), nl)
+	).
+
+ksiazka(16, 'Flatlandia', autor('Edwin Abbott Abbott', 1838-1926), wydanie('Seel & Co', 1884)). 
+ksiazka(28, 'R.U.R.', autor('Karel Čapek', 1890-1938), wydanie('Players Press', 2002)).
+ksiazka(29, 'Daszeńka, czyli żywot szczeniaka', autor('Karel Čapek', 1890-1938), wydanie('Nasza Księgarnia', 1989)).
+ksiazka(34, 'Kobieta z wydm', autor('Kobo Abe', 1924-1993), wydanie('Wydawnictwo Znak', 2007)).
+ksiazka(56, 'Zamek', autor('Franz Kafka', 1883-1924), wydanie('Zielona Sowa', 2001)).
+ksiazka(87, 'Gargantua i Pantagruel', autor('Francois Rabelais', 1494-1553), wydanie('Siedmioróg', 2004)).
+
+% sprawdza czy daty na siebie nachodza
+date_overlaps(A-B, C-D) :- A < D, B > C.
+
+% oblicza wiek autora (narodziny-smierc)
+wiek(A-B, Wiek) :- Wiek is B - A.
+
+% sprawdza który autor żył dłużej
+max(A1-W1, _-W2, A1-W1) :- W1 >= W2.
+max(_-W1, A2-W2, A2-W2) :- W2 > W1.
+
+
+setof(Imie, (A, B, C, D)^ksiazka(A, B, autor(Imie, C), D), Autorzy).
+
+findall(Tytul, (ksiazka(_, Tytul, autor(_, _-Smierc), wydanie(_, Wydana)), Wydana > Smierc), Tytuly).
+
+findall(Autor-Ksiazki, bagof(Tytul, (A, B, C, D)^(ksiazka(A, Tytul, autor(Autor, C), D)), Ksiazki), Lista).
+
+setof(Autor1-Autor2, (A, B, C, D, E, F, G, H, I, J)^(ksiazka(A, B, autor(Autor1, C-D), E), ksiazka(F, G, autor(Autor2, H-I), J), Autor1 \= Autor2, date_overlaps(C-D, H-I), C=<H), Lista).
+
+findall(Autor-Wiek, (ksiazka(_, _, autor(Autor, Zycie), _), wiek(Zycie, Wiek)), Lista), foldl(max, Lista, none-0, Wynik). 
+% długość listy
+list_number([],0).
+list_number([_|T], Y) :-
+list_number(T, Z),
+Y is Z + 1.
+
+list_add([], L, L). 
+list_add([H|T], L2, [H|TL]) :- list_add(T, L2, TL). 
+
+one(_,1).
+add(A,B,C) :- C is A+B.
+
+list_number_mfr(L, Length) :-
+maplist(one, L, L2),
+foldl(add, L2, 0, Length).
+
+connect(H, L, [H|L]).
+
+list_add_mfr(L1, L2, L3) :-
+foldl(connect, L1, [], RL1),
+foldl(connect, RL1, L2, L3).
+
+usun(_, [], []).
+usun(Term, [Term|Tail], Tail).
+usun(Term, [Head|Tail], [Head|Result]) :-
+  Term \= Head,
+  usun(Term, Tail, Result).
+
+usun_wszystkie(_, [], []).
+
+usun_wszystkie(Term, [Term|Tail], Result) :-
+    usun_wszystkie(Term, Tail, Result).
+
+usun_wszystkie(Term, [Head|Tail], [Head|Result]) :-
+    Term \= Head,
+    usun_wszystkie(Term, Tail, Result).
+
+dodaj(Element, Lista, [Element|Lista]).
+
+dodaj(Term, [Head|Tail],[Head|New_Tail]):-
+    dodaj(Term,Tail,New_Tail).
+
+palindrom(L):- reverse(L, L).
+ 
+podlista([],[]).
+podlista([H|T],[H|Result]):-
+    podlista(T,Result).
+podlista([_|T],Result):-
+    podlista(T,Result).
+odetnij_z_lewej(0, Lista, Lista).
+
+odetnij_z_lewej(Term, [_|T], Result) :-
+    Term1 is Term - 1,
+    odetnij_z_lewej(Term1, T, Result).
+
+odetnij_z_prawej(0, Lista, Lista).
+odetnij_z_prawej(Term, Lista, Result) :-
+    Term1 is Term - 1,
+    append(MniejszaLista,[_], Lista),
+    odetnij_z_prawej(Term1,MniejszaLista,Result).
+
+odetnij_z_prawej(A,B,C) :-
+    length(D,A),
+    append(C,D,B).
+
+zawiera(L,S):-
+    append([_,S,_],L).
+
+usun(X,[X|Reszta],Reszta).
+usun(X,[Y|Ogon],[Y|Reszta]) :-
+	usun(X,Ogon,Reszta).
+
+permutacja([],[]).
+permutacja(L,[X|P]) :-
+	usun(X,L,L1),
+	permutacja(L1,P).
+
+podziel([X], [X], []).
+podziel([X,Y], [X], [Y]).
+podziel([X,Y|A], [X|B], [Y|C]) :- podziel(A, B, C).
+
+is_empty_diff(L-E) :- L == E. 
+
+length_diff(L, 0) :- 
+is_empty_diff(L). 
+
+length_diff([H|T]-E, L) :- 
+not(is_empty_diff([H|T]-E)), 
+length_diff(T-E,PL), 
+L is PL + 1. 
+
+member_diff(X,[X|T]-E):- 
+not(is_empty_diff([X|T]-E)). 
+
+member_diff(Y,[H|T]-E):- 
+not(is_empty_diff([H|T]-E)), 
+member_diff(Y,T-E). 
+
+obetnij_liste(Lista, KrotszaLista) :-
+    length(Lista, Dlugosc), Dlugosc > 1,
+    append([_|KrotszaLista], [_], Lista).
+
+dlugosc([], 0).
+dlugosc([_|Rest], Wynik) :-
+    dlugosc(Rest, Result),
+    Wynik is Result + 1.
+
+sklej([], X, X).
+sklej([H1|T1], List2, [H1|Result]) :-
+    sklej(T1, List2, Result).
+
+podziel([], _, [], []).
+podziel(Source, Dlugosc, List1, List2) :-
+    dlugosc(List2, Dlugosc),
+    sklej(List1, List2, Source).
+
+jest_nizszy(budynek(_, _, W1, _), budynek(_, _, W2, _)) :- W1 < W2.
+:- op(500, xfy, jest_nizszy).
+
+ktory_budynek_jest_nizszy(X, X, X).
+ktory_budynek_jest_nizszy(B1, B2, Result) :-
+    (B1 jest_nizszy B2) -> Result = B1 ; Result = B2.
+
+najnizszy(List, Result) :- nth1(1, List, First), foldl(ktory_budynek_jest_nizszy, List, First, Result).
+
+zakres(Stop, Stop, [Stop]) :- !.
+zakres(Start, Stop, [Start|Lista]) :-
+    Start1 is Start + 1,
+    zakres(Start1, Stop, Lista).
+
+podwojna(List) :-
+	append(A, B, List), A = B.
+
+:- op(300, xf, jest_kobieta).
+:- op(300, xf, jest_mezczyzna).
+
+wspolne_pokolenie(A, A) :- !, fail.
+wspolne_pokolenie(A, B) :-
+    dziecko(A, P), dziecko(B, P).
+wspolne_pokolenie(A, B) :-
+	dziecko(A, P1), dziecko(B, P2), wspolne_pokolenie(P1, P2).
+
+neg(Q) :- call(Q), !, false;true. 
+
+ifelse(Warunek,Prawda,Falsz):- call(Warunek),!,Prawda;Falsz. 
+
+
+filtruj(X) :- X > 0. 
+% Filtrowanie 
+include(filtruj, [1, -1, 3, -4, 5], Wynik). 
+
+mapuj(X,Y) :- Y is X * 2. 
+% Mapowanie 
+maplist(mapuj, [1, -1, 3, -4, 5], Wynik). 
+
+redukuj(X1, X2, Wynik) :- Wynik is X1 * X2. 
+% Redukowanie 
+foldl(redukuj, [1, -1, 3, -4, 5], 1, Wynik). 
+
+length(Lista, 5),
+format('Przed pętlą: ~w\n', [Lista]),
+foreach(between(1, 5, I), (
+	nth1(I, Lista, I) 
+)),
+format('Po pętli: ~w\n', [Lista]).
+
+foo(X,Y) :- Y is X*2. % funkcja do mapowania
+map([],[]) % przypadek bazowy
+map([H1|T1],[H2|T2]) :-
+		foo(H1,H2), % przypisanie wartośći do H2
+		map(T1,T2). % mapowanie ogonów list, czyli dalsza rekurencja
+
+filter([],[]).               % przypadek bazowy, przepisanie
+filter([H|T],[H|Wynik]) :-
+		condition(H),            % sprawdzamy, czy głowa spełnia warunek
+		filter(T,Wynik).         % jeśli tak to wykonujemy rekurencje dalej
+filter([H|T],Wynik) :-
+		\+ condition(H),         % nie spełnia warunku -> olewamy i lecimy dalej
+		filter(T,Wynik).
+
+odwroc([],Acc,Acc).
+odwroc([H|T],Acc,Result) :-
+		NewAcc = [H|Acc],    % aktualizujemy: dodajemy H przed Acc
+		odwroc(T,NewAcc,Result).
+odwroc(List,Result) :-    %fasada
+		odwroc(List,[],Result).
+
+mapuj(_, [], []).                       % warunek zerowy
+mapuj(Predykat, [H|T], [MH|MT]) :-      % Predykat -> funkcja mapujaca
+    Zapytanie =.. [Predykat, H, MH],    % tworzymy zapytanie Predykat(H,MH)
+    call(Zapytanie),                    % wywolujemy to zapytanie
+    mapuj(Predykat, T, MT).             % rekurencyjie wywolujemy to dalej
+
+razy_dwa(X,Y) :- Y is X * 2.
+
+?- mapuj(razy_dwa, [1,2,3], Wynik).
+zwieksz(X, Result) :- Result is X + 1.
+dodaj_jeden(X, Result):- maplist(zwieksz, X, Result).
+
+jest_dodatni(X) :- X >= 0.
+jest_ujemny(X) :- X < 0.
+
+podziel(Lista, Dodatnie, Ujemne) :- include(jest_dodatni, Lista, Dodatnie), include(jest_ujemny, Lista, Ujemne).
+
+:- op(100, xfy, w).
+
+wewnetrzna(Wewn, Zewn) :- w(Wewn, Zewn).
+wewnetrzna(Wewn, Zewn) :-
+    w(Wewn, P),
+    wewnetrzna(P, Zewn).
+
+zewn(Lalka, 0) :- \+ w(Lalka, _), !.
+zewn(Lalka, Rozmiar1) :-
+    w(Lalka, InnaLalka),
+    zewn(InnaLalka, Rozmiar),
+    Rozmiar1 is Rozmiar + 1.
+
+wewn(Lalka, 0) :- \+ w(_, Lalka), !.
+wewn(Lalka, Rozmiar1) :-
+    w(InnaLalka, Lalka),
+    wewn(InnaLalka, Rozmiar),
+    Rozmiar1 is Rozmiar + 1.
+
+rozmiar_grupy(Lalka, Rozmiar) :-
+    zewn(Lalka, Z),
+    wewn(Lalka, W),
+    Rozmiar is Z + W + 1.
+
+znajdz_element([], _, _) :- fail.
+znajdz_element([H|_], 1, H).
+znajdz_element([_|T], Index, Element) :-
+    Decremented is Index - 1,
+    znajdz_element(T, Decremented, Element).
+
+podziel(List, 0, [], List) :- !.
+podziel([H|T], Len, [H|X], List2) :-
+	Len > 0,
+	Len1 is Len - 1,
+	podziel(T, Len1, X, List2).
+
+:- op(100, xfy, bezposredniDo).
+
+
+
+polaczenie(A, B) :- bezposredniDo(A, B); bezposredniDo(B, A).
+polaczenie(A, B) :-
+    bezposredniDo(A, C);bezposredniDo(C,A),
+    polaczenie(C, B),!.
+
+umiesc(E, List, 1, [E|List]).
+
+umiesc(E, [H|T], Index, Result) :-
+    Decremented is Index - 1,
+    umiesc(E, T, Decremented, NewTail),
+    Result = [H|NewTail].
+
+podwoj(X, [X, X]).
+
+podwoj_elementy([], []).
+podwoj_elementy(List, Result) :- maplist(podwoj, List, Mapped), flatten(Mapped, Result)
+
+to_samo_miejsce(osoba(_, _, _, _, wydarzenie(MU, _)-wydarzenie(MS, _))) :- MU == MS.
+
+lista_osob_to_samo_miejsce(ListaOsob, ZnalezioneOsoby) :-
+    include(to_samo_miejsce, ListaOsob, ZnalezioneOsoby).
+
+
+rodzina(osoba(jan, kowalski,data(5,kwiecien,1946),pracuje(tpsa,3000)),
+osoba(anna,kowalski,data(8,luty,1949), pracuje(szkola,1500)),
+[osoba(maria,kowalski,data(20,maj,1973), pracuje(argo_turist,4000)),
+osoba(pawel,kowalski,data(15,listopad,1979),zasilek)]).
+
+rodzina(osoba(krzysztof, malinowski, data(24,lipiec,1950), bezrobocie),
+osoba(klara, malinowski, data(9,styczen,1951), pracuje(kghm,8000)),
+[osoba(monika, malinowski, data(19,wrzesien,1980), bezrobocie)]).
+
+ maz(X) :- rodzina(X,_,_).
+ zona(X) :- rodzina(_,X,_).
+ dziecko(X) :- rodzina(_,_,Dzieci), member(X,Dzieci).
+
+ istnieje(Osoba) :- maz(Osoba); zona(Osoba); dziecko(Osoba).
+
+ data_urodzenia(osoba(_,_,Data,_),Data).
+
+ pensja(osoba(_,_,_,pracuje(_,P)),P).
+ pensja(osoba(_,_,_,zasilek),500).
+ pensja(osoba(_,_,_,bezrobocie),0).
+
+ zarobki([],0).
+ zarobki([Osoba|Lista],Suma) :-
+ pensja(Osoba,S),
+ zarobki(Lista,Reszta),
+ Suma is S + Reszta.
+cyfra(0).
+cyfra(1).
+cyfra(2).
+cyfra(3).
+cyfra(4).
+cyfra(5).
+cyfra(6).
+cyfra(7).
+cyfra(8).
+cyfra(9).
+
+liczba(X):- %%% 0-999
+cyfra(S),
+cyfra(D),
+cyfra(J),
+X is 100*S+10*D+J.
+
+
+liczba(X):- %%% 0-99
+cyfra(S),!,
+cyfra(D),
+cyfra(J),
+X is 100*S+10*D+J.
+
+liczba(X):- %%% 0-9
+cyfra(S),
+cyfra(D),!
+cyfra(J),
+X is 100*S+10*D+J.
+
+
+:-  op( 50, xfy, :).
+
+% route( Place1, Place2, Day, Route):
+%    Route is a sequence of flights on Day, starting at Place1, ending at Place2
+
+route( P1, P2, Day, [ P1 / P2 / Fnum / Deptime ] )  :-    % Direct flight   
+  flight( P1, P2, Day, Fnum, Deptime, _).
+
+route( P1, P2, Day, [ (P1 / P3 / Fnum1 / Dep1) | RestRoute] )  :-    % Indirect connection   
+  route( P3, P2, Day, RestRoute),
+  flight( P1, P3, Day, Fnum1, Dep1, Arr1),
+  deptime( RestRoute, Dep2),                                        % Departure time of Route   
+  transfer( Arr1, Dep2).                                        % Enough time for transfer 
+
+flight( Place1, Place2, Day, Fnum, Deptime, Arrtime)  :-
+   timetable( Place1, Place2, Flightlist),
+   member( Deptime / Arrtime / Fnum / Daylist , Flightlist),
+   flyday( Day, Daylist).
+
+flyday( Day, Daylist)  :-
+   member( Day, Daylist).
+
+flyday( Day, alldays)  :-
+   member( Day, [mo,tu,we,th,fr,sa,su] ).
+
+deptime( [ _ / _ / _ / Dep | _], Dep).
+
+transfer( Hours1:Mins1, Hours2:Mins2)  :-
+   60 * (Hours2 - Hours1) + Mins2 - Mins1 >= 40.
+
+member( X, [X | _] ).
+
+member( X, [_ | L] )  :-
+   member( X, L).
+
+
+% A FLIGHT DATABASE
+
+timetable( edinburgh, london,
+           [  9:40 / 10:50 / ba4733 / alldays,
+             13:40 / 14:50 / ba4773 / alldays,
+             19:40 / 20:50 / ba4833 / [mo,tu,we,th,fr,su] ] ). 
+
+timetable( london, edinburgh,
+           [  9:40 / 10:50 / ba4732 / alldays,
+             11:40 / 12:50 / ba4752 / alldays,
+             18:40 / 19:50 / ba4822 / [mo,tu,we,th,fr] ] ). 
+
+timetable( london, ljubljana,
+           [ 13:20 / 16:20 / jp212 / [mo,tu,we,fr,su],
+             16:30 / 19:30 / ba473 / [mo,we,th,sa] ] ). 
+
+timetable( london, zurich,
+           [  9:10 / 11:45 / ba614 / alldays,
+             14:45 / 17:20 / sr805 / alldays ] ). 
+
+timetable( london, milan,
+           [  8:30 / 11:20 / ba510 / alldays,
+             11:00 / 13:50 / az459 / alldays ] ). 
+
+timetable( ljubljana, zurich,
+           [ 11:30 / 12:40 / jp322 / [tu,th] ] ). 
+
+timetable( ljubljana, london,
+           [ 11:10 / 12:20 / jp211 / [mo,tu,we,fr,su],
+             20:30 / 21:30 / ba472 / [mo,we,th,sa] ] ). 
+
+timetable( milan, london,
+           [  9:10 / 10:00 / az458 / alldays,
+             12:20 / 13:10 / ba511 / alldays ] ). 
+
+timetable( milan, zurich,
+           [  9:25 / 10:15 / sr621 / alldays,
+             12:45 / 13:35 / sr623 / alldays ] ). 
+
+timetable( zurich, ljubljana,
+           [ 13:30 / 14:40 / jp323 / [tu,th] ] ). 
+
+timetable( zurich, london,
+           [ 9:00 / 9:40 / ba613 / [mo,tu,we,th,fr,sa],
+            16:10 / 16:55 / sr806 / [mo,tu,we,th,fr,su] ] ). 
+
+timetable( zurich, milan,
+           [ 7:55 / 8:45 / sr620 / alldays ] ).
+
+
+query3(City1,City2,City3,FN1,FN2,FN3,FN4)  :-
+  permutation( [milan,ljubljana,zurich],[City1,City2,City3]),
+  flight( london, City1, tu, FN1, _, _),
+  flight( City1, City2, we, FN2, _, _),
+  flight( City2, City3, th, FN3, _, _),
+  flight( City3, london, fr, FN4, _, _).
+
+conc([], L, L).
+
+conc([X|L1],L2, [X|L3]) :-
+  conc(L1,L2,L3).
+
+permutation( [], []).
+
+permutation( L, [X | P])  :-
+  del( X, L, L1),
+  permutation( L1, P).
+
+del( X, [X|L], L).
+
+del( X, [Y|L], [Y|L1])  :-
+  del( X, L, L1).
+
+:- op(300, xfx, ma).
+:- op(200, xfy, i).
+
+jas ma kota i psa.
+ala ma jasia i angine i dosc_agh.
+rybki i kanarki.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
