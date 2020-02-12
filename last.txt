@@ -317,6 +317,33 @@ to_samo_miejsce(osoba(_, _, _, _, wydarzenie(MU, _)-wydarzenie(MS, _))) :- MU ==
 lista_osob_to_samo_miejsce(ListaOsob, ZnalezioneOsoby) :-
     include(to_samo_miejsce, ListaOsob, ZnalezioneOsoby).
 
+parzysta_ver2([]).
+parzysta_ver2([_, _ | T]) :-
+    parzysta_ver2(T).
+
+nieparzysta_ver2([_]).
+nieparzysta_ver2([_, _ | T]) :-
+    nieparzysta_ver2(T).
+
+znaczy(0,zero).
+znaczy(1,jeden).
+znaczy(2,dwa).
+znaczy(3,trzy).
+znaczy(4,cztery).
+znaczy(5,piec).
+znaczy(6,szesc).
+znaczy(7,siedem).
+znaczy(8,osiem).
+znaczy(9,dziewiec).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% no. 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+przeloz_ver1([], []).
+przeloz_ver1([X|XS],[Y|YS]) :-
+    znaczy(X,Y),
+    przeloz_ver1(XS,YS).
+
 
 rodzina(osoba(jan, kowalski,data(5,kwiecien,1946),pracuje(tpsa,3000)),
 osoba(anna,kowalski,data(8,luty,1949), pracuje(szkola,1500)),
@@ -344,6 +371,50 @@ osoba(klara, malinowski, data(9,styczen,1951), pracuje(kghm,8000)),
  pensja(Osoba,S),
  zarobki(Lista,Reszta),
  Suma is S + Reszta.
+
+dataUr(osoba(I, _, data(_, _, X), _), I-X).
+
+analizuj(X) :-
+    rodzina(A,_,_),
+    dataUr(A,X).
+analizuj(X) :-
+    rodzina(_, A,_),
+    dataUr(A,X).
+analizuj(X) :-
+    rodzina(_,_,A),
+    member(B, A),
+    dataUr(B, X).
+
+analizuj(X) :-
+    rodzina(A,_,_),
+    dataUr(A,H1),
+    rodzina(_, B,_),
+    dataUr(B,H2),
+    
+    append([H1,H2],R,X),
+    rodzina(_,_,C),
+
+	analizuj(C,R).
+
+analizuj([],[]).
+analizuj([H|C],[H3|R]):-
+    dataUr(H, H3),
+    analizuj(C,R).
+
+
+imieNaziwskoOsobyRok(osoba(X, Y, data(_,_, R), _), X, Y, R).
+
+analizujRok(I, M, X) :-
+    rodzina(A,_,_),
+    imieNaziwskoOsobyRok(A, I, M, X).
+analizujRok(I, M, X) :-
+    rodzina(_, A,_),
+    imieNaziwskoOsobyRok(A, I, M, X).
+analizujRok(I, M, X) :-
+    rodzina(_,_,A),
+    member(B, A),
+    imieNaziwskoOsobyRok(B, I, M, X).
+
 cyfra(0).
 cyfra(1).
 cyfra(2).
@@ -492,11 +563,102 @@ ala ma jasia i angine i dosc_agh.
 rybki i kanarki.
 
 
+% 1.05 Reverse a list.
+my_reverse(L, R) :- my_reverse(L,[],R).
+my_reverse([H],L,[H|L]) :- !.
+my_reverse([X|T],L,R) :- my_reverse(T,[X|L],R).
+
+% 1.06 Find out wether a list is a palindrome.
+palindrome(L) :- reverse(L,L).
+
+
+% 1.08 Elimiate consecutive duplicates of list elements.
+compress([H], [H]).
+compress([H,H|T], X) :- compress([H|T],X).
+compress([H|T], [H|X]) :- compress(T, X).
+
+% 1.09 Pack consecutive duplicates of list elements into sublists.
+pack([], []).
+pack([H,H|T], X) :- pack([[H,H]|T],X).
+pack([[H|Hs]|[H|T]], X) :- pack([[H,H|Hs]|T], X).
+pack([H|T], [[H]|X]) :-
+        not(is_list(H)),
+        pack(T,X).
+pack([H|T], [H|X]) :- pack(T,X).
 
 
 
+% 1.14 Diplicate the elements of a list.
+duplicate([H], [H,H]).
+duplicate([H|L], [H,H|X]) :- duplicate(L, X).
 
+% 1.15 Duplicate the elements of a list a given number of times.
+duplicate([H], 1, [H]) :- !.
+duplicate([H], N, [H|X]) :-
+        M is N - 1,
+        M > 0,
+        duplicate([H], M, X).
+duplicate([H|T], N, X) :-
+      duplicate([H], N, Y),
+      duplicate(T, N, Z),
+      !, append(Y, Z, X).
 
+% 1.16 Drop every N'th element from a list.
+drop(L, N, L) :-
+        length(L, Length),
+        Length < N.
+drop(List, N, NthDropped) :-
+      length(List,Length),
+      Length >= N,
+      length(WithNth, N),
+      append(WithNth, Tail, List),
+      drop(Tail, N, Rest),
+      length(NthElem, 1),
+      append(WithoutNth, NthElem, WithNth),
+      append(WithoutNth, Rest, NthDropped).
+
+% 1.17 Split a list into two parts; the length of the first part is given.
+split(L, 0, [], L).
+split([H|T], N, [H|X], L2) :-
+        N > 0,
+        M is N - 1,
+        split(T, M, X, L2).
+
+% 1.18 Extract a slice from a list.
+slice([H|_], 1, 1, [H]).
+slice([H|T], 1, To, [H|X]) :-
+        N is To - 1,
+        slice(T, 1, N, X).
+slice([_|T], From, To, L) :-
+        N is From - 1,
+        M is To - 1,
+        slice(T, N, M, L).
+
+% 1.19 Rotate a list N places to the left.
+rotate([H|T], 1, X) :-
+        append(T, [H], X), !.
+rotate([H|T],N,X) :-
+        append(T, [H], Y),
+        N1 is N - 1,
+        rotate(Y, N1, X).
+
+% 1.20 remove the K'th element from a list.
+remove_at(H, [H|T], 1, T).
+remove_at(X, [H|T], N, [H|R]) :-
+        N1 is N - 1,
+        remove_at(X, T, N1, R).
+
+% 1.21 Insert an element at a given position into a list.
+insert_at(A, L, 1, [A|L]).
+insert_at(A, [H|T], N, [H|R]) :-
+        N1 is N - 1,
+        insert_at(A, T, N1, R).
+
+% 1.22 Create list containing all intergers within a given range.
+range(N, N, [N]) :- !.
+range(N, M, [N|T]) :-
+        N1 is N + 1,
+        range(N1, M, T).
 
 
 
