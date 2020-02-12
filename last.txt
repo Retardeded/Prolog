@@ -344,6 +344,22 @@ przeloz_ver1([X|XS],[Y|YS]) :-
     znaczy(X,Y),
     przeloz_ver1(XS,YS).
 
+prac(adam,1400).
+4 prac(bogdan,2300).
+5 prac(cesiek,2700).
+6 prac(damian,2400).
+7 prac(eustachy,2600).
+8
+9 avg(AV):-
+10 findall(P,prac(_,P),LP),
+11 write(LP),nl,
+12 sumlist(LP,SP),
+13 length(LP,L),
+14 AV is SP/L.
+15
+16 pracd(X,P):- prac(X,P),avg(AV), P > AV.
+
+
 
 rodzina(osoba(jan, kowalski,data(5,kwiecien,1946),pracuje(tpsa,3000)),
 osoba(anna,kowalski,data(8,luty,1949), pracuje(szkola,1500)),
